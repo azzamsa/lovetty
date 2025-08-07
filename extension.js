@@ -19,28 +19,32 @@
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
-import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 const Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.Button {
-    _init() {
-        super._init(0.0, _('My Shiny Indicator'));
+    class Indicator extends PanelMenu.Button {
+        _init() {
+            super._init(0.0, _('My Shiny Indicator'));
 
-        this.add_child(new St.Icon({
-            icon_name: 'face-smile-symbolic',
-            style_class: 'system-status-icon',
-        }));
+            this.icon = new St.Icon({
+                gicon: Gio.FileIcon.new(
+                    Gio.File.new_for_path(`${extensionPath}/icons/hicolor/scalable/actions/default-symbolic.svg`)
+                ),
+                style_class: 'system-status-icon',
+            });
+            this.add_child(this.icon);
 
-        let item = new PopupMenu.PopupMenuItem(_('Show Notification'));
-        item.connect('activate', () => {
-            Main.notify(_('Whatʼs up, folks?'));
-        });
-        this.menu.addMenuItem(item);
-    }
-});
+
+            // Enable click interaction
+            this.connect('button-press-event', () => {
+                Main.notify(_('Whatʼs up, folks?'));
+            });
+        }
+    },
+);
 
 export default class IndicatorExampleExtension extends Extension {
     enable() {
