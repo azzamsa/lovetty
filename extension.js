@@ -34,46 +34,6 @@ const FRAME_INTERVAL = 12;
 const EMOJIS = ['🎉', '✨', '🎊', '💫', '🎈', '🪅', '⭐', '🍕', '🐶', '🚀', '💥', '🔥', '🎶'];
 
 
-// Hand picked emojis!
-const EMOJIS = [
-    // Delicious Food
-    '🍕',
-    '🍣',
-    '🍔',
-    '🍩',
-    '🍰',
-    '🧁',
-    '🍹',
-    '🧋',
-
-    // Vacations
-    '🏖️',
-    '🏕️',
-    '🚀',
-    '⛲',
-    '🎠',
-    '🛝',
-
-    // Up up up!
-    '💸',
-    '💰',
-    '👑',
-    '🔥',
-    '💪🏼',
-    '🦾',
-    '💡',
-    '🧪',
-    '❤️',
-
-    // Cuteness overload!
-    '🦄',
-    '🐇',
-    '🐣',
-    '🐲',
-    '🦀',
-];
-
-
 let confettiElements = [];
 let animationLoop = null;
 
@@ -112,25 +72,22 @@ export default class LovettyExtension extends Extension {
 }
 
 function createConfetti() {
-    const screenHeight = Main.layoutManager.primaryMonitor.height;
-    const screenWidth = Main.layoutManager.primaryMonitor.width;
+    const { height, width } = Main.layoutManager.primaryMonitor;
+    const fontMin = 16,
+        fontMax = 26;
 
-    const fontSizeRange = [16, 26]; // Min and max font size
-
-    for (let i = 0; i < EMOJIS.length; i++) {
-        const emoji = EMOJIS[i];
-        const fontSize = Math.floor(Math.random() * (fontSizeRange[1] - fontSizeRange[0])) + fontSizeRange[0];
+    for (const emoji of EMOJIS) {
+        const fontSize = Math.floor(Math.random() * (fontMax - fontMin)) + fontMin;
 
         const label = new St.Label({
             text: emoji,
             reactive: false,
+            style: `font-size: ${fontSize}px;`,
         });
-        label.set_style(`font-size: ${fontSize}px;`);
 
-        const x = Math.random() * screenWidth;
-        const y = screenHeight - 10;
+        const x = Math.random() * width;
+        const y = height - 10;
         label.set_position(x, y);
-
         Main.layoutManager.addChrome(label);
 
         const speedX = (Math.random() - 0.5) * SPEED_X_RANGE * 2;
@@ -138,10 +95,10 @@ function createConfetti() {
 
         confettiElements.push({
             actor: label,
-            x: x,
-            y: y,
-            speedX: speedX,
-            speedY: speedY,
+            x,
+            y,
+            speedX,
+            speedY,
             gravity: GRAVITY,
         });
     }
@@ -150,10 +107,9 @@ function createConfetti() {
 function animateConfetti() {
     const screenHeight = Main.layoutManager.primaryMonitor.height;
 
-    confettiElements.forEach(confetti => {
+    for (const confetti of confettiElements) {
         confetti.x += confetti.speedX;
         confetti.y += confetti.speedY;
-
         confetti.speedY += confetti.gravity;
 
         if (confetti.y > screenHeight) {
@@ -161,7 +117,7 @@ function animateConfetti() {
         } else {
             confetti.actor.set_position(confetti.x, confetti.y);
         }
-    });
+    };
 
     confettiElements = confettiElements.filter(confetti => confetti.y <= screenHeight);
 
@@ -170,10 +126,19 @@ function animateConfetti() {
     } else {
         return GLib.SOURCE_REMOVE;
     }
+
+    confettiElements = confettiElements.filter((c) => c.y <= screenHeight);
+
+    if (confettiElements.length === 0) {
+        animationLoop = null;  // clear it so next click can re-start cleanly
+        return GLib.SOURCE_REMOVE;
+    }
+
+    confettiElements = confettiElements.filter(c => c.y <= screenHeight);
+    return confettiElements.length > 0 ? GLib.SOURCE_CONTINUE : GLib.SOURCE_REMOVE;
 }
 
 function startConfetti() {
     createConfetti();
-
-    animationLoop = GLib.timeout_add(GLib.PRIORITY_DEFAULT, FRAME_INTERVAL, animateConfetti);
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, FRAME_INTERVAL, animateConfetti);
 }
