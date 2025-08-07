@@ -13,7 +13,44 @@ const GRAVITY = 0.25;
 const INITIAL_SPEED_Y = 15;
 const SPEED_X_RANGE = 4;
 const FRAME_INTERVAL = 12;
-const EMOJIS = ['🎉', '✨', '🎊', '💫', '🎈', '🪅', '⭐', '🍕', '🐶', '🚀', '💥', '🔥', '🎶'];
+// Hand picked emojis!
+const EMOJIS = [
+    // Delicious Food
+    "🍕",
+    "🍣",
+    "🍔",
+    "🍩",
+    "🍰",
+    "🧁",
+    "🍹",
+    "🧋",
+
+    // Vacations
+    "🏖️",
+    "🏕️",
+    "🚀",
+    "⛲",
+    "🎠",
+    "🛝",
+
+    // Up up up!
+    "💸",
+    "💰",
+    "👑",
+    "🔥",
+    "💪🏼",
+    "🦾",
+    "💡",
+    "🧪",
+    "❤️",
+
+    // Cuteness overload!
+    "🦄",
+    "🐇",
+    "🐣",
+    "🐲",
+    "🦀",
+];
 
 
 let confettiElements = [];
