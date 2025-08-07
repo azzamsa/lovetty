@@ -13,6 +13,7 @@ const GRAVITY = 0.25;
 const INITIAL_SPEED_Y = 15;
 const SPEED_X_RANGE = 4;
 const FRAME_INTERVAL = 12;
+
 // Hand picked emojis!
 const EMOJIS = [
     // Delicious Food
@@ -59,7 +60,7 @@ let animationLoop = null;
 const Indicator = GObject.registerClass(
     class Indicator extends PanelMenu.Button {
         _init() {
-            super._init(0.0, _('My Shiny Indicator'));
+            super._init(0.0, _('Lovetty'));
 
             this.icon = new St.Icon({
                 gicon: Gio.FileIcon.new(
@@ -69,8 +70,6 @@ const Indicator = GObject.registerClass(
             });
             this.add_child(this.icon);
 
-
-            // Enable click interaction
             this.connect('button-press-event', () => {
                 startConfetti()
             });
@@ -145,16 +144,6 @@ function animateConfetti() {
     } else {
         return GLib.SOURCE_REMOVE;
     }
-
-    confettiElements = confettiElements.filter((c) => c.y <= screenHeight);
-
-    if (confettiElements.length === 0) {
-        animationLoop = null;  // clear it so next click can re-start cleanly
-        return GLib.SOURCE_REMOVE;
-    }
-
-    confettiElements = confettiElements.filter(c => c.y <= screenHeight);
-    return confettiElements.length > 0 ? GLib.SOURCE_CONTINUE : GLib.SOURCE_REMOVE;
 }
 
 function startConfetti() {
