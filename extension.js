@@ -31,6 +31,8 @@ const GRAVITY = 0.25;
 const INITIAL_SPEED_Y = 15;
 const SPEED_X_RANGE = 4;
 const FRAME_INTERVAL = 12;
+const EMOJIS = ['🎉', '✨', '🎊', '💫', '🎈', '🪅', '⭐', '🍕', '🐶', '🚀', '💥', '🔥', '🎶'];
+
 
 // Hand picked emojis!
 const EMOJIS = [
@@ -113,30 +115,31 @@ function createConfetti() {
     const screenHeight = Main.layoutManager.primaryMonitor.height;
     const screenWidth = Main.layoutManager.primaryMonitor.width;
 
-    for (let i = 0; i < CONFETTI_COUNT; i++) {
-        const startFromLeft = i % 2 === 0;
-        const xPos = startFromLeft ? 0 : screenWidth;
-        const yPos = screenHeight - 10;
+    const fontSizeRange = [16, 26]; // Min and max font size
 
-        const colorOptions = ["#FF1461", "#18FF92", "#5A87FF", "#FBF38C"];
-        const randomColor = colorOptions[Math.floor(Math.random() * colorOptions.length)];
-        const size = Math.floor(Math.random() * 8) + 4;
+    for (let i = 0; i < EMOJIS.length; i++) {
+        const emoji = EMOJIS[i];
+        const fontSize = Math.floor(Math.random() * (fontSizeRange[1] - fontSizeRange[0])) + fontSizeRange[0];
 
-        const confetti = new St.Bin({
-            style_class: '',
+        const label = new St.Label({
+            text: emoji,
             reactive: false,
         });
-        confetti.set_style(`background-color: ${randomColor}; width: ${size}px; height: ${size}px; border-radius: 50%;`);
-        confetti.set_position(xPos, yPos);
-        Main.layoutManager.addChrome(confetti);
+        label.set_style(`font-size: ${fontSize}px;`);
 
-        const speedX = startFromLeft ? Math.random() * SPEED_X_RANGE + 4 : -(Math.random() * SPEED_X_RANGE + 4);
+        const x = Math.random() * screenWidth;
+        const y = screenHeight - 10;
+        label.set_position(x, y);
+
+        Main.layoutManager.addChrome(label);
+
+        const speedX = (Math.random() - 0.5) * SPEED_X_RANGE * 2;
         const speedY = -(Math.random() * 8 + INITIAL_SPEED_Y);
 
         confettiElements.push({
-            actor: confetti,
-            x: xPos,
-            y: yPos,
+            actor: label,
+            x: x,
+            y: y,
             speedX: speedX,
             speedY: speedY,
             gravity: GRAVITY,
@@ -173,13 +176,4 @@ function startConfetti() {
     createConfetti();
 
     animationLoop = GLib.timeout_add(GLib.PRIORITY_DEFAULT, FRAME_INTERVAL, animateConfetti);
-}
-
-function clearConfetti() {
-    confettiElements.forEach(confetti => confetti.actor.destroy());
-    confettiElements = [];
-    if (animationLoop) {
-        GLib.Source.remove(animationLoop);
-        animationLoop = null;
-    }
 }
