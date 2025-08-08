@@ -96,7 +96,7 @@ export default class LovettyExtension extends Extension {
 }
 
 function createConfetti() {
-    const {height, width} = Main.layoutManager.primaryMonitor;
+    const { height, width } = Main.layoutManager.primaryMonitor;
     const fontMin = 16,
         fontMax = 26;
 
@@ -151,24 +151,24 @@ function animateConfetti() {
 }
 
 function showTrumpet(extensionPath) {
+    const trumpetImage = `${extensionPath}/assets/trumpet.png`;
+    const trumpetSound = `file://${extensionPath}/assets/trumpet.wav`;
+
     // Prevent multiple sounds by checking if one is already active
     if (activePlayer !== null)
         return;
 
-    const trumpetImage = `${extensionPath}/assets/trumpet.svg`;
-    const trumpetSound = `file://${extensionPath}/assets/trumpet.wav`;
-
-    const file = Gio.File.new_for_path(trumpetImage);
-    const gicon = new Gio.FileIcon({file});
-    const icon = new St.Icon({
+    // Show image
+    const trumpetFile = Gio.File.new_for_path(trumpetImage);
+    const gicon = new Gio.FileIcon({ file: trumpetFile });
+    const image = new St.Icon({
         gicon,
-        icon_size: 128,
+        icon_size: 64,
     });
 
-    // Show image
-    Main.uiGroup.add_child(icon);
+    Main.uiGroup.add_child(image);
     // Position in top-right corner
-    icon.set_position(global.stage.width - 135, 30);
+    image.set_position(global.stage.width - 70, 40);
 
     // Play sound
 
@@ -188,8 +188,8 @@ function showTrumpet(extensionPath) {
         player.set_state(Gst.State.NULL);
         activePlayer = null;
 
-        if (icon.get_parent())
-            icon.destroy();
+        if (image.get_parent())
+            image.destroy();
 
         return GLib.SOURCE_REMOVE;
     });

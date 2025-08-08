@@ -6,12 +6,15 @@
    id="Layer_2"
    x="0px"
    y="0px"
-   viewBox="0 0 128 64"
+   viewBox="0 0 128 128"
    xml:space="preserve"
    sodipodi:docname="trumpet.svg"
    width="128"
-   height="64"
+   height="128"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   inkscape:export-filename="trumpet.png"
+   inkscape:export-xdpi="6000"
+   inkscape:export-ydpi="6000"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -28,20 +31,21 @@
    showguides="true"
    inkscape:zoom="5.390625"
    inkscape:cx="59.362319"
-   inkscape:cy="32.927536"
+   inkscape:cy="62.608696"
    inkscape:window-width="1920"
    inkscape:window-height="1005"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
-   inkscape:current-layer="g10"><sodipodi:guide
+   inkscape:current-layer="g10"
+   showborder="true"><sodipodi:guide
      position="70.084024,93.569261"
      orientation="0,-1"
      id="guide11"
      inkscape:locked="false" /></sodipodi:namedview>
 <g
    id="g9"
-   transform="translate(-4.5297455,-31.019146)">
+   transform="translate(-4.5297456,-31.019146)">
 	
 		
 	
@@ -67,7 +71,7 @@
 	<g
    id="g10"><g
      id="g11"
-     transform="matrix(0.67996582,0.63248361,-0.63368223,0.70928017,56.84553,-23.452822)"><rect
+     transform="matrix(0.67996582,0.63248361,-0.63368223,0.70928017,56.84553,8.4164748)"><rect
        x="48.84"
        y="38.919998"
        transform="matrix(0.7282,-0.6853,0.6853,0.7282,-5.5855,70.8106)"
