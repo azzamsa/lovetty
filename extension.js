@@ -151,7 +151,7 @@ function animateConfetti() {
 }
 
 function showTrumpet(extensionPath) {
-    const trumpetImage = `${extensionPath}/assets/trumpet.png`;
+    const trumpetImage = `${extensionPath}/assets/trumpet.svg`;
     const trumpetSound = `file://${extensionPath}/assets/trumpet.wav`;
 
     // Prevent multiple sounds by checking if one is already active
@@ -163,12 +163,12 @@ function showTrumpet(extensionPath) {
     const gicon = new Gio.FileIcon({ file: trumpetFile });
     const image = new St.Icon({
         gicon,
-        icon_size: 64,
+        icon_size: 128,
     });
 
     Main.uiGroup.add_child(image);
     // Position in top-right corner
-    image.set_position(global.stage.width - 70, 40);
+    image.set_position(global.stage.width - 130, 40); // left-right, top-down
 
     // Play sound
 
