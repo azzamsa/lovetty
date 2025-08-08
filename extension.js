@@ -1,12 +1,14 @@
+import GObject from "gi://GObject";
+import St from "gi://St";
+import GLib from "gi://GLib";
+import Gio from 'gi://Gio';
 
-import GObject from 'gi://GObject';
-import St from 'gi://St';
-import GLib from 'gi://GLib'
-
-import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
-import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
-
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import {
+    Extension,
+    gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
 // Configurable variables
 const GRAVITY = 0.25;
@@ -59,8 +61,8 @@ let animationLoop = null;
 
 const Indicator = GObject.registerClass(
     class Indicator extends PanelMenu.Button {
-        _init() {
-            super._init(0.0, _('Lovetty'));
+        _init(extensionPath) {
+            super._init(0.0, _("Lovetty"));
 
             this.icon = new St.Icon({
                 gicon: Gio.FileIcon.new(
@@ -71,10 +73,10 @@ const Indicator = GObject.registerClass(
             this.add_child(this.icon);
 
             this.connect('button-press-event', () => {
-                startConfetti()
+                startConfetti();
             });
         }
-    },
+    }
 );
 
 export default class LovettyExtension extends Extension {
