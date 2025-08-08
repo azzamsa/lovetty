@@ -2,6 +2,13 @@
   "name": "lovetty",
   "description": "Celebrate your moments with rains of confetti!",
   "uuid": "lovetty@azzamsa.com",
+  "gettext-domain": "me@azzamsa.com",
+  "version": 1000,
+  "donations": {
+    "github": "azzamsa"
+  },
+  "settings-schema": "org.gnome.shell.extensions.lovetty",
+  "url": "https://github.com/azzamsa/lovetty",
   "shell-version": [
     "48"
   ]
