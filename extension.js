@@ -73,7 +73,7 @@ const Indicator = GObject.registerClass(
             this.add_child(this.icon);
 
             this.connect('button-press-event', () => {
-                startConfetti();
+                startAnimations();
             });
         }
     }
@@ -92,7 +92,7 @@ export default class LovettyExtension extends Extension {
 }
 
 function createConfetti() {
-    const {height, width} = Main.layoutManager.primaryMonitor;
+    const { height, width } = Main.layoutManager.primaryMonitor;
     const fontMin = 16,
         fontMax = 26;
 
@@ -146,13 +146,36 @@ function animateConfetti() {
         return GLib.SOURCE_REMOVE;
 }
 
-function startConfetti() {
+function showTrumpet() {
+    const label = new St.Label({
+        text: '🎺',
+        style_class: 'lovetty-emoji',
+        style: 'font-size: 48px;'
+    });
+
+    Main.uiGroup.add_child(label);
+
+    // Position in top-right corner
+    label.set_position(global.stage.width - 60, 20);
+
+    // Remove after 2 seconds
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2000, () => {
+        if (label.get_parent()) {
+            label.destroy();
+        }
+        return GLib.SOURCE_REMOVE;
+    });
+}
+
+
+function startAnimations() {
     if (animationLoop !== null) {
         GLib.Source.remove(animationLoop); // Cancel previous loop
         animationLoop = null;
     }
 
     createConfetti();
+    showTrumpet();
     animationLoop = GLib.timeout_add(
         GLib.PRIORITY_DEFAULT,
         FRAME_INTERVAL,
