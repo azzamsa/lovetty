@@ -1,14 +1,14 @@
-import GObject from "gi://GObject";
-import St from "gi://St";
-import GLib from "gi://GLib";
+import GObject from 'gi://GObject';
+import St from 'gi://St';
+import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
 import {
     Extension,
     gettext as _,
-} from "resource:///org/gnome/shell/extensions/extension.js";
-import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
-import * as Main from "resource:///org/gnome/shell/ui/main.js";
+} from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 // Configurable variables
 const GRAVITY = 0.25;
@@ -19,40 +19,40 @@ const FRAME_INTERVAL = 12;
 // Hand picked emojis!
 const EMOJIS = [
     // Delicious Food
-    "🍕",
-    "🍣",
-    "🍔",
-    "🍩",
-    "🍰",
-    "🧁",
-    "🍹",
-    "🧋",
+    '🍕',
+    '🍣',
+    '🍔',
+    '🍩',
+    '🍰',
+    '🧁',
+    '🍹',
+    '🧋',
 
     // Vacations
-    "🏖️",
-    "🏕️",
-    "🚀",
-    "⛲",
-    "🎠",
-    "🛝",
+    '🏖️',
+    '🏕️',
+    '🚀',
+    '⛲',
+    '🎠',
+    '🛝',
 
     // Up up up!
-    "💸",
-    "💰",
-    "👑",
-    "🔥",
-    "💪🏼",
-    "🦾",
-    "💡",
-    "🧪",
-    "❤️",
+    '💸',
+    '💰',
+    '👑',
+    '🔥',
+    '💪🏼',
+    '🦾',
+    '💡',
+    '🧪',
+    '❤️',
 
     // Cuteness overload!
-    "🦄",
-    "🐇",
-    "🐣",
-    "🐲",
-    "🦀",
+    '🦄',
+    '🐇',
+    '🐣',
+    '🐲',
+    '🦀',
 ];
 
 
@@ -62,7 +62,7 @@ let animationLoop = null;
 const Indicator = GObject.registerClass(
     class Indicator extends PanelMenu.Button {
         _init(extensionPath) {
-            super._init(0.0, _("Lovetty"));
+            super._init(0.0, _('Lovetty'));
 
             this.icon = new St.Icon({
                 gicon: Gio.FileIcon.new(
@@ -92,7 +92,7 @@ export default class LovettyExtension extends Extension {
 }
 
 function createConfetti() {
-    const { height, width } = Main.layoutManager.primaryMonitor;
+    const {height, width} = Main.layoutManager.primaryMonitor;
     const fontMin = 16,
         fontMax = 26;
 
@@ -132,20 +132,18 @@ function animateConfetti() {
         confetti.y += confetti.speedY;
         confetti.speedY += confetti.gravity;
 
-        if (confetti.y > screenHeight) {
+        if (confetti.y > screenHeight)
             confetti.actor.destroy();
-        } else {
+        else
             confetti.actor.set_position(confetti.x, confetti.y);
-        }
     };
 
     confettiElements = confettiElements.filter(confetti => confetti.y <= screenHeight);
 
-    if (confettiElements.length > 0) {
+    if (confettiElements.length > 0)
         return GLib.SOURCE_CONTINUE;
-    } else {
+    else
         return GLib.SOURCE_REMOVE;
-    }
 }
 
 function startConfetti() {
@@ -158,6 +156,6 @@ function startConfetti() {
     animationLoop = GLib.timeout_add(
         GLib.PRIORITY_DEFAULT,
         FRAME_INTERVAL,
-        animateConfetti,
+        animateConfetti
     );
 }

@@ -1,0 +1,19 @@
+{
+  "name": "lovetty",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.14.0",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/config-helpers": "^0.3.0",
+    "ci-run-eslint": "git+https://gitlab.gnome.org/World/javascript/ci-run-eslint.git",
+    "eslint": "^9.32.0",
+    "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git"
+  }
+}
