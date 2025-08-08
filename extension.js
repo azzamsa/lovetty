@@ -3,7 +3,8 @@ import St from 'gi://St';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import Gst from 'gi://Gst';
-import Gtk from 'gi://Gtk';
+
+Gst.init(null);
 
 import {
     Extension,
@@ -60,6 +61,7 @@ const EMOJIS = [
 
 let confettiElements = [];
 let animationLoop = null;
+let activePlayer = null;
 
 const Indicator = GObject.registerClass(
     class Indicator extends PanelMenu.Button {
@@ -94,7 +96,7 @@ export default class LovettyExtension extends Extension {
 }
 
 function createConfetti() {
-    const { height, width } = Main.layoutManager.primaryMonitor;
+    const {height, width} = Main.layoutManager.primaryMonitor;
     const fontMin = 16,
         fontMax = 26;
 
@@ -149,11 +151,15 @@ function animateConfetti() {
 }
 
 function showTrumpet(extensionPath) {
+    // Prevent multiple sounds by checking if one is already active
+    if (activePlayer !== null)
+        return;
+
     const trumpetImage = `${extensionPath}/assets/trumpet.svg`;
     const trumpetSound = `file://${extensionPath}/assets/trumpet.wav`;
 
     const file = Gio.File.new_for_path(trumpetImage);
-    const gicon = new Gio.FileIcon({ file });
+    const gicon = new Gio.FileIcon({file});
     const icon = new St.Icon({
         gicon,
         icon_size: 128,
@@ -165,13 +171,23 @@ function showTrumpet(extensionPath) {
     icon.set_position(global.stage.width - 135, 30);
 
     // Play sound
-    Gst.init(null);
+
+    // If a sound is already playing, skip (or return early)
+    if (activePlayer && activePlayer.get_state(0)[1] === Gst.State.PLAYING)
+        return; // Or optionally queue
+
+
     const player = Gst.ElementFactory.make('playbin', 'player');
     player.uri = trumpetSound;
+    // 🔒 lock active player immediately
+    activePlayer = player;
     player.set_state(Gst.State.PLAYING);
 
     // Remove after 2 seconds
     GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1500, () => {
+        player.set_state(Gst.State.NULL);
+        activePlayer = null;
+
         if (icon.get_parent())
             icon.destroy();
 

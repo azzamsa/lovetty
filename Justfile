@@ -22,6 +22,7 @@ check: fmt-check lint
 
 [doc('Format the codebase')]
 fmt:
+    pnpm run lint --fix
     
 
 [doc('Check if the codebase is properly formatted')]
